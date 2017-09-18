@@ -5,7 +5,7 @@ import '../styles/App.css';
 class Header extends Component {
   render() {
     return (
-      <nav>I am the Navigation Bar</nav>
+      <nav>Im a fancy Navigation Bar</nav>
     );
   }
 }
@@ -13,7 +13,7 @@ class Header extends Component {
 class Footer extends Component {
   render() {
     return (
-      <footer>I am the Footer</footer>
+      <footer>and I am the matching fancy Footer</footer>
     );
   }
 }
@@ -21,7 +21,11 @@ class Footer extends Component {
 class BaseLayout extends Component {
   render() {
     return (
-      <div>This should house Header and Footer components and be able to house any children components.</div>
+      <div>
+        <Header/>
+        {this.props.children}
+        <Footer/>
+      </div>
     );
   }
 }
@@ -32,20 +36,23 @@ class ParentComponent extends Component {
 
     //we are really in a *bind* here.... :)
     //fix it...
-
+    this.handleInput = this.handleInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     //state lives here
     this.state = {
-      whatToSay: "",
-      whatWasSaid: "",
+      whatToSay: '',
+      whatWasSaid: ''
     }
   }
-  handleInput(e) {
-    e.preventDefault();
+  handleInput(event) {
+    event.preventDefault();
+
     //set the state on input change
-    this.setState({whatToSay: this.state.whatToSay});
+    this.setState({whatToSay: event.target.value});
   }
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log(this.state.whatToSay);
     //check console to see if firing
     console.log("fired");
     //set the state for props and for value (prevents output from appearing when typing)
@@ -56,13 +63,13 @@ class ParentComponent extends Component {
   }
   render() {
     return (
-      <div>Smart Component: I have a function, but something isn't working? I also need to pass that function to the ChildComponent.
+      <div>
         <div>
-          <input onChange={this.handleInput} type="text" placeholder="Say It, Don't Spray It!" />
+          <input onChange={this.handleInput} type="text" placeholder="Say It, Don't Spray It!" value={this.state.whatToSay} />
         </div>
         <div>
-          <ChildComponent onClick={"FILL_ME_IN"}/>
-          <DisplayComponent sayWhat={"FILL_ME_IN"} />
+          <ChildComponent onClick={this.handleSubmit}/>
+          <DisplayComponent sayWhat={this.state.whatWasSaid} />
         </div>
       </div>
     );
@@ -72,7 +79,7 @@ class ParentComponent extends Component {
 class ChildComponent extends Component {
   render() {
     return (
-      <div>Dumb Component receiving Props
+      <div>
         <div>
           <input type="submit" onClick={this.props.onClick}/>
         </div>
@@ -94,10 +101,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <BaseLayout></BaseLayout>
-        <Header />
-        <ParentComponent />
-        <Footer />
+        <BaseLayout>
+          <ParentComponent />
+        </BaseLayout>
       </div>
     );
   }
