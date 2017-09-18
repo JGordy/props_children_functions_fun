@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class Header extends Component {
   render() {
     return (
-      <nav>Im a fancy Navigation Bar</nav>
+      <nav>&lt; Nav &#47; &gt;</nav>
     );
   }
 }
